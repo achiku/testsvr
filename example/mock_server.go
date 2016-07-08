@@ -1,13 +1,19 @@
-package client
+package example
 
 import (
 	"fmt"
 	"net/http"
 
-	"github.com/achiku/testserver"
+	"github.com/achiku/testsvr"
 )
 
-func hello(logger testserver.Logfer) http.HandlerFunc {
+// DefaultHandlerMap default url and handler map
+var DefaultHandlerMap = map[string]testsvr.CreateHandler{
+	"/hello":   hello,
+	"/goodbye": goodbye,
+}
+
+func hello(logger testsvr.Logfer) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		logger.Logf("yeaaaaaaaahhh!!")
 		w.WriteHeader(http.StatusOK)
@@ -15,36 +21,10 @@ func hello(logger testserver.Logfer) http.HandlerFunc {
 	}
 }
 
-func goodbye(logger testserver.Logfer) http.HandlerFunc {
+func goodbye(logger testsvr.Logfer) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		logger.Logf("goodby!!!!!")
 		w.WriteHeader(http.StatusOK)
 		fmt.Fprintf(w, "goodbye!")
 	}
-}
-
-// NewMockServerMux creates new mock server mux
-func NewMockServerMux(hm testserver.URLHandlerMap, logger testserver.Logfer) *http.ServeMux {
-	mux := http.NewServeMux()
-	if hm == nil {
-		mux.HandleFunc("/hello", hello(logger))
-		mux.HandleFunc("/goodbye", goodbye(logger))
-		return mux
-	}
-
-	for url, handler := range hm {
-		mux.HandleFunc(url, handler)
-	}
-	return mux
-}
-
-// NewMockServer creates new mock server
-func NewMockServer(port string) *http.Server {
-	logger := testserver.Logger{}
-	mux := NewMockServerMux(nil, logger)
-	server := &http.Server{
-		Handler: mux,
-		Addr:    "localhost:" + port,
-	}
-	return server
 }

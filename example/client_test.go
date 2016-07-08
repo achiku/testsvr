@@ -1,4 +1,4 @@
-package client
+package example
 
 import (
 	"fmt"
@@ -6,7 +6,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/achiku/testserver"
+	"github.com/achiku/testsvr"
 )
 
 func TestNewClient(t *testing.T) {
@@ -18,7 +18,7 @@ func TestNewClient(t *testing.T) {
 
 func TestClientHello(t *testing.T) {
 	c := NewClient()
-	s := httptest.NewServer(NewMockServerMux(nil, t))
+	s := httptest.NewServer(testsvr.NewMux(DefaultHandlerMap, t))
 	defer s.Close()
 
 	name := "achiku"
@@ -36,13 +36,25 @@ func TestClientHello(t *testing.T) {
 
 func TestClientHelloError(t *testing.T) {
 	c := NewClient()
-	hm := testserver.URLHandlerMap{
-		"/hello": func(w http.ResponseWriter, r *http.Request) {
+	hl := func(logger testsvr.Logfer) http.HandlerFunc {
+		return func(w http.ResponseWriter, r *http.Request) {
 			w.WriteHeader(http.StatusInternalServerError)
+			logger.Logf("something went wrong")
 			fmt.Fprintf(w, "failed")
-		},
+		}
 	}
-	s := httptest.NewServer(NewMockServerMux(hm, t))
+	by := func(logger testsvr.Logfer) http.HandlerFunc {
+		return func(w http.ResponseWriter, r *http.Request) {
+			w.WriteHeader(http.StatusInternalServerError)
+			logger.Logf("something went wrong")
+			fmt.Fprintf(w, "failed")
+		}
+	}
+	hm := testsvr.URLHandlerMap{
+		"/hello":   hl,
+		"/goodbye": by,
+	}
+	s := httptest.NewServer(testsvr.NewMux(hm, t))
 	defer s.Close()
 
 	name := "achiku"

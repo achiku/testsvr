@@ -1,4 +1,4 @@
-package client
+package example
 
 import (
 	"fmt"
