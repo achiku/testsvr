@@ -20,7 +20,7 @@ func TestClientHello(t *testing.T) {
 	s := httptest.NewServer(testsvr.NewMux(DefaultHandlerMap, t))
 	defer s.Close()
 
-	data := []struct {
+	testData := []struct {
 		name   string
 		status int
 	}{
@@ -29,7 +29,7 @@ func TestClientHello(t *testing.T) {
 		{"achiku", http.StatusOK},
 	}
 	c := NewClient(s.URL)
-	for _, d := range data {
+	for _, d := range testData {
 		status, resp, err := c.Hello(d.name)
 		if err != nil {
 			t.Fatal(err)
@@ -67,7 +67,19 @@ func TestClientHelloError(t *testing.T) {
 	defer s.Close()
 
 	c := NewClient(s.URL)
-	status, resp, err := c.Hello("achiku")
+	name := "achiku"
+	status, resp, err := c.Hello(name)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if status != http.StatusInternalServerError {
+		t.Errorf("want %d got %d", http.StatusOK, status)
+	}
+	if resp != "failed" {
+		t.Errorf("want failed got %s", resp)
+	}
+
+	status, resp, err = c.Goodbye(name)
 	if err != nil {
 		t.Fatal(err)
 	}
