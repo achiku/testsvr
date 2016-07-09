@@ -14,7 +14,7 @@ var DefaultHandlerMap = map[string]CreateHandler{
 	"/goodbye": goodbye,
 }
 
-func hello(logger Logfer) http.HandlerFunc {
+func hello(logger Loger) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		logger.Logf("RawURL: %s", r.URL)
 		logger.Logf("Header: %s", r.Header)
@@ -24,7 +24,7 @@ func hello(logger Logfer) http.HandlerFunc {
 	}
 }
 
-func goodbye(logger Logfer) http.HandlerFunc {
+func goodbye(logger Loger) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		logger.Logf("RawURL: %s", r.URL)
 		logger.Logf("Header: %s", r.Header)

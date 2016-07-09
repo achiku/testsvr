@@ -45,14 +45,14 @@ func TestClientHello(t *testing.T) {
 }
 
 func TestClientHelloError(t *testing.T) {
-	hl := func(logger testsvr.Logfer) http.HandlerFunc {
+	hl := func(logger testsvr.Loger) http.HandlerFunc {
 		return func(w http.ResponseWriter, r *http.Request) {
 			w.WriteHeader(http.StatusInternalServerError)
 			logger.Logf("something went wrong")
 			fmt.Fprintf(w, "failed")
 		}
 	}
-	by := func(logger testsvr.Logfer) http.HandlerFunc {
+	by := func(logger testsvr.Loger) http.HandlerFunc {
 		return func(w http.ResponseWriter, r *http.Request) {
 			w.WriteHeader(http.StatusInternalServerError)
 			logger.Logf("something went wrong")

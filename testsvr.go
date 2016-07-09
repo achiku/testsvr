@@ -6,14 +6,15 @@ import (
 )
 
 // CreateHandler creates handlers for test/dev server
-type CreateHandler func(Logfer) http.HandlerFunc
+type CreateHandler func(Loger) http.HandlerFunc
 
 // URLHandlerMap url and handler
 type URLHandlerMap map[string]CreateHandler
 
-// Logfer inerface Logf
-type Logfer interface {
+// Loger inerface Logf
+type Loger interface {
 	Logf(format string, args ...interface{})
+	Log(args ...interface{})
 }
 
 // Logger is used in NewServer for logging
@@ -21,11 +22,16 @@ type Logger struct{}
 
 // Logf output log
 func (l Logger) Logf(format string, args ...interface{}) {
-	log.Println(format, args)
+	log.Printf(format, args)
+}
+
+// Log output log
+func (l Logger) Log(args ...interface{}) {
+	log.Println(args)
 }
 
 // NewMux creates mux for test/dev server
-func NewMux(hm URLHandlerMap, l Logfer) *http.ServeMux {
+func NewMux(hm URLHandlerMap, l Loger) *http.ServeMux {
 	mux := http.NewServeMux()
 	for url, handler := range hm {
 		mux.HandleFunc(url, handler(l))
