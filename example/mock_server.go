@@ -15,15 +15,18 @@ var DefaultHandlerMap = map[string]testsvr.CreateHandler{
 
 func hello(logger testsvr.Logfer) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		logger.Logf("yeaaaaaaaahhh!!")
+		logger.Logf("RawURL: %s", r.URL)
+		logger.Logf("Header: %s", r.Header)
+		name := r.URL.Query().Get("name")
 		w.WriteHeader(http.StatusOK)
-		fmt.Fprintf(w, "hello!")
+		fmt.Fprintf(w, "hello! %s.", name)
 	}
 }
 
 func goodbye(logger testsvr.Logfer) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		logger.Logf("goodby!!!!!")
+		logger.Logf("RawURL: %s", r.URL)
+		logger.Logf("Header: %s", r.Header)
 		w.WriteHeader(http.StatusOK)
 		fmt.Fprintf(w, "goodbye!")
 	}
