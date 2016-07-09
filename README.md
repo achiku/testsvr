@@ -1,16 +1,18 @@
 # testsvr
 
+[![Build Status](https://travis-ci.org/achiku/testsvr.svg?branch=master)](https://travis-ci.org/achiku/testsvr)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/achiku/testsvr/master/LICENSE)
 [![Doc](https://img.shields.io/badge/godoc-reference-blue.svg)](https://godoc.org/github.com/achiku/testsvr)
+[![Go Report Card](https://goreportcard.com/badge/github.com/achiku/testsvr)](https://goreportcard.com/report/github.com/achiku/testsvr)
 
 ## Description
 
-Make test server aware of `-v` of `go test`, and reuse that code for stand alone mock server
+Make `httptest` generated test server aware of `-v` of `go test`, and reuse that code for stand alone mock server
 
 
 ## Why created
 
-Interacting with external services becomes almost an requirement for modern Web service development. This simple set of functions makes it easier to share codes between mock server for development and tests. Also, using this library makes your test server created by `httptest` aware of `-v` of `go test` so that you can switch on and off request/response logging easily.
+Interacting with external services becomes almost an requirement for modern Web service development. Golang has an awesome `httptest` standard library making it really easy to start and close mock server in test code. However,  this mock server, which is supposed to be a part of test code, is not aware of `-v` of `go test`, and this leads to verbose output if you put logging in mock server handlers. This tiny little library makes `httptest` generated mock server aware of `-v`, and keep your test output sane and clean.
 
 
 ## Installation
