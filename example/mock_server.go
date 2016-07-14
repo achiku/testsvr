@@ -13,7 +13,7 @@ var DefaultHandlerMap = map[string]testsvr.CreateHandler{
 	"/goodbye": goodbye,
 }
 
-func hello(logger testsvr.Loger) http.HandlerFunc {
+func hello(logger testsvr.Logger) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		logger.Logf("RawURL: %s", r.URL)
 		logger.Logf("Header: %s", r.Header)
@@ -23,7 +23,7 @@ func hello(logger testsvr.Loger) http.HandlerFunc {
 	}
 }
 
-func goodbye(logger testsvr.Loger) http.HandlerFunc {
+func goodbye(logger testsvr.Logger) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		logger.Logf("RawURL: %s", r.URL)
 		logger.Logf("Header: %s", r.Header)
