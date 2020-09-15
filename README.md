@@ -24,7 +24,7 @@ go get -u github.com/achiku/testsvr
 
 ## Example
 
-Full example is in https://github.com/achiku/testsvr/example
+Full example is in https://github.com/achiku/testsvr/tree/master/example
 
 ###### mock server code
 
